@@ -2,7 +2,7 @@
 require_once(__DIR__ . '/../db.php');
 
 // Your OpenAI API Key
-$openai_api_key = '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';
+$openai_api_key = '<KEY HERE>';
 
 $prompt = "Generate a random task for a task management app";
 
