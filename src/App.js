@@ -1,25 +1,37 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import TaskList from './components/TaskList';
+import AddTaskForm from './components/AddTaskForm';
 import './App.css';
 
-function App() {
+const App = () => {
+  const [tasks, setTasks] = useState([]);
+
+  const fetchTasks = async () => {
+      const url = 'http://localhost/task-manager/api/get-tasks.php'; // Fetch tasks from API
+      const response = await fetch(url);
+      const data = await response.json();
+      setTasks(data.tasks);
+  };
+
+  useEffect(() => {
+      fetchTasks(); // Fetch tasks on component mount
+  }, []);
+
+  const handleTaskAdded = () => {
+      fetchTasks(); // Refresh the task list when a new task is added
+  };
+
+  const handleTaskDeleted = () => {
+      fetchTasks(); // Refresh the task list when a task is deleted
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div>
+          <h1>Task Manager</h1>
+          <AddTaskForm onTaskAdded={handleTaskAdded} />
+          <TaskList tasks={tasks} onTaskDeleted={handleTaskDeleted} /> {/* Pass the delete handler */}
+      </div>
   );
-}
+};
 
 export default App;
